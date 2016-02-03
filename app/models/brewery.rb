@@ -3,9 +3,9 @@ class Brewery < ActiveRecord::Base
   #has_many :ratings, through: beers
 
   def print_report
-    puts name
-    puts "established at year #{year}"
-    puts "number of beers #{beers.count}"
+    puts self.name
+    puts "established at year #{self.year}"
+    puts "number of beers #{self.beers.count}"
   end
 
   def restart
