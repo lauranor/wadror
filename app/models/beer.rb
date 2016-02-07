@@ -1,5 +1,5 @@
 class Beer < ActiveRecord::Base
-#  include RatingAverage
+  include RatingAverage
 
   belongs_to :brewery
   has_many :ratings, dependent: :destroy
@@ -9,7 +9,4 @@ class Beer < ActiveRecord::Base
     "#{name} #{brewery.name}"
   end
 
-  def average_rating
-     ratings.inject(0){|summa,r| summa += r.score } / ratings.size.to_f
-  end
   end

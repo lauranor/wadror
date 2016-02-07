@@ -5,6 +5,7 @@ require 'rails/all'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+#{config.autoload_paths += Dir["#{Rails.root}/lib"]}
 
 module Ratebeer
   class Application < Rails::Application
@@ -22,5 +23,8 @@ module Ratebeer
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.autoload_paths += Dir["#{Rails.root}/lib"]
   end
+
+
 end
