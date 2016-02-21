@@ -25,4 +25,21 @@ describe "Rating" do
     expect(beer1.ratings.count).to eq(1)
     expect(beer1.average_rating).to eq(15.0)
   end
+
+  it "shows list of ratings" do
+    a = create_beer_with_rating(user, 2)
+    b = create_beer_with_rating(user, 12)
+    c = create_beer_with_rating(user, 22)
+
+    visit ratings_path
+    expect(page).to have_content 'Number of ratings: 3'
+  end
+
+  def create_beer_with_rating(user, score)
+    beer = FactoryGirl.create(:beer)
+    FactoryGirl.create(:rating, score:score, beer:beer, user:user)
+    beer
+  end
+
+
 end

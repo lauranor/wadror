@@ -22,7 +22,7 @@
   </div>
   <div class="field">
 
-    <%= f.select :brewery_id , options_from_collection_for_select(@breweries, :id, :to_s)%><br>
+    <%= f.select :brewery_id , options_from_collection_for_select(@breweries, :id, :to_s, selected: @beer_id)%><br>
   </div>
   <div class="actions">
     <%= f.submit %>

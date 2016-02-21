@@ -10,6 +10,7 @@ class MembershipsController < ApplicationController
   # GET /memberships/1
   # GET /memberships/1.json
   def show
+
   end
 
   # GET /memberships/new
@@ -26,7 +27,7 @@ class MembershipsController < ApplicationController
   # POST /memberships.json
   def create
     @membership = Membership.new(membership_params)
-    club = BeerClub.find membershio_params[ḅeer_club_id]
+    club = BeerClub.find membership_params[ḅeer_club_id]
 
     if not current_user.in? club.members and @membership.save
       current_user.memberships << @membership
