@@ -1,14 +1,20 @@
-<h2>List of ratings</h2>
-<p> Number of ratings: <%= @ratings.count %> </p>
-<p>
+<h1>Rating statistics</h1>
+
+<h2>Best beers</h2>
+<ul>
+  <% @top_beers.each do |beer| %>
+      <li> <%= beer.name %> </li>
+  <% end %>
+</ul>
+
+<h2>Resent ratings</h2>
 
 <ul>
-  <% @ratings.each do |rating| %>
+  <% @recent_ratings.each do |rating| %>
       <li> <%= rating %>  <%= link_to rating.user.username, rating.user %></li>
   <% end %>
 </ul>
 
-</p>
 
 <p>
   <%= link_to 'New rating', new_rating_path %>

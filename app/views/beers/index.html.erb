@@ -2,7 +2,8 @@
 
 <h1>Listing Beers</h1>
 
-<table>
+
+<table class="table table-hover">
   <thead>
   <tr>
     <th>Name</th>
@@ -19,21 +20,16 @@
         <td><%= beer.name %></td>
         <td><%= beer.style %></td>
         <td><%= link_to beer.brewery.name, brewery_path(beer) %></td>
-        <td><%= link_to 'Show', beer %></td>
-        <td><%= link_to 'Edit', edit_beer_path(beer) %></td>
-        <td><%= link_to 'Destroy', beer, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        <td><%= link_to 'Show', beer, class:'btn btn-default btn-sm' %></td>
+        <td><%= link_to 'Edit', edit_beer_path(beer), class:'btn btn-default btn-sm' %></td>
+        <td><%= link_to 'Destroy', beer, class:'btn btn-danger btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %></td>
       </tr>
   <% end %>
   </tbody>
 </table>
 
+
 <br>
 
-<p>
-  <%= link_to 'New beer', new_beer_path %>
-</p>
-<p>
-  <%= link_to 'List of breweries', breweries_path %>
-</p>
 
 

@@ -2,6 +2,10 @@
 module RatingAverage
 
   def average_rating
-    ratings.inject(0){|summa,r| summa += r.score } / ratings.size.to_f
+    if ratings.count.nil?
+       0
+    else
+      ratings.inject(0){|summa,r| summa += r.score } / ratings.count.to_f
+    end
   end
 end

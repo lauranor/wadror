@@ -11,6 +11,7 @@ end
 
 group :development do
   gem 'web-console', '~> 2.0'
+  gem 'rails_layout'
 end
 
 group :production do
@@ -37,7 +38,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt', '~> 3.1.7'
 gem 'httparty'
 
-
+gem 'bootstrap-sass'
 
 
 

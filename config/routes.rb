@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :beer_clubs
   resources :memberships
   resources :users
-  resource :session, only: [:new, :create, :delete]
+  resource :session, only: [:new, :create, :destroy]
   resources :places, only:[:index, :show]
 
   get 'signup', to: 'users#new'
@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   resources :ratings, only: [:index, :new, :create, :destroy]
 
   root 'breweries#index'
-  #get 'kaikki_bisset', to: 'beers#index'
 
 
 

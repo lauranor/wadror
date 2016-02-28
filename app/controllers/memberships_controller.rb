@@ -28,18 +28,13 @@ class MembershipsController < ApplicationController
   def create
     @membership = Membership.new(membership_params)
     @membership.user = current_user
-    club = BeerClub.find membership_params[ḅeer_club_id]
 
-    if not current_user.in? club.members and @membership.save
-      current_user.memberships << @membership
-      @membership.save
-      redirect_to @membership.user, notice: "You've joined to #{@membership.beer_club}"
+    if not current_user.in? BeerClub.find(@membership.beer_club.id).members and @membership.save
+      redirect_to @membership.user, notice: "You've joined to #{@membership.beer_club.name}"
     else
       @clubs = BeerClub.all
       render :new
-      end
     end
-
   end
 
   # PATCH/PUT /memberships/1
@@ -53,26 +48,28 @@ class MembershipsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @membership.errors, status: :unprocessable_entity }
       end
+    end
   end
 
   # DELETE /memberships/1
   # DELETE /memberships/1.json
   def destroy
+    name = @membership.beer_club.name
     @membership.destroy
     respond_to do |format|
-      format.html { redirect_to current_user, notice: "Membership in #{@membership.beer_club.name} ended." }
+      format.html { redirect_to current_user, notice: "Membership in #{name} ended." }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_membership
-      @membership = Membership.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_membership
+    @membership = Membership.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def membership_params
-      params.require(:membership).permit(:beer_club_id, :user_id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def membership_params
+    params.require(:membership).permit(:beer_club_id, :user_id)
+  end
 end

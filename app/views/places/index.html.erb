@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <%= form_tag places_path do %>
     city <%= text_field_tag :city, params[:city] %>
     <%= submit_tag "Search" %>
@@ -15,7 +13,13 @@
       <% @places.each do |place| %>
           <tr>
             <% Place.rendered_fields.each do |f| %>
-            <td><%= place.send(f) %></td>
+                <td>
+                  <% if f==:name %>
+                      <%= link_to place.name, place_path(place.id) %>
+                  <% else %>
+                      <%= place.send(f) %>
+                  <% end %>
+                </td>
             <% end %>
           </tr>
       <% end %>
