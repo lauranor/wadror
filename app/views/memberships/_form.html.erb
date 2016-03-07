@@ -12,8 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :beer_club_id %><br>
-    <%= f.number_field :beer_club_id %>
+    <%= f.select :beer_club_id, options_from_collection_for_select(@clubs, :id, :to_s, selected: @membership.beer_club_id) %>
   </div>
   <div class="field">
     <%= f.label :user_id %><br>
@@ -23,3 +22,4 @@
     <%= f.submit %>
   </div>
 <% end %>
+

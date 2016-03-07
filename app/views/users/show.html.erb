@@ -1,8 +1,13 @@
 <p>
   <strong><%= @user.username %></strong>
 
+  <% if current_user.admin and @user.locked? %>
+      <span class="label label-info">account frozen</span>
+  <% end %>
+</p>
 
-  has made <%= pluralize(@user.ratings.count, 'raiting' )%> ratings
+<p>
+  has made <%= pluralize(@user.ratings.count, 'raiting') %> ratings
 </p>
 
 <% if @user.beer_clubs.any? %>
@@ -21,16 +26,25 @@
       <li>
         <%= rating %>
         <% if @user == current_user %>
-            <%= link_to 'delete', rating, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <%= link_to 'delete', rating, method: :delete, data: {confirm: 'Are you sure?'} %>
         <% end %>
       </li>
   <% end %>
 </ul>
 
 <% if @user == current_user %>
-    <%= link_to 'Delete account', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Delete account', @user, method: :delete, data: {confirm: 'Are you sure?'} %>
     <%= link_to 'Edit', edit_user_path(@user) %>
+
+<% else %>
+    <% if current_user.admin %>
+        <% label = @user.locked? ? 'reactivate account' : 'froze account' %>
+        <%= link_to label, toggle_lock_user_path(@user.id), method: :post, class: "btn btn-danger" %>
+    <% end %>
 <% end %>
 
+
+<p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
+</p>

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include RatingAverage
 
+
   validates :username, uniqueness: true,
             length: {minimum: 3, maximum: 15}
 
@@ -24,24 +25,38 @@ class User < ActiveRecord::Base
 
   def favorite_style
     return nil if ratings.empty?
-    brewery_ratings = rated_breweries.inject([]) do |ratings, brewery|
-      ratings << {
-          name: style,
-          rating: rating_of_style(style)
-      }
-    end
-    style_ratings.sort_by { |style| style[:rating] }.reverse.first[:name]
+
+    rated = ratings.map{ |r| r.beer.style }.uniq
+    rated.sort_by { |style| -rating_of_style(style) }.first
   end
+
+  def favorite_brewery
+    return nil if ratings.empty?
+
+    rated = ratings.map{ |r| r.beer.brewery }.uniq
+    rated.sort_by { |brewery| -rating_of_brewery(brewery) }.first
+  end
+
+
 
   def rated_breweries
     ratings.map{ |r| r.beer.brewery }.uniq
   end
 
+
   def rating_of_style(style)
-    ratings_of_style = ratings.select do |r|
-      r.beer.style == style
-    end
-    ratings_of_style.map(&:score).sum / ratings_of_style.count
+    ratings_of = ratings.select{ |r| r.beer.style==style }
+    ratings_of.map(&:score).inject(&:+) / ratings_of.count.to_f
+  end
+
+  def rating_of_brewery(brewery)
+    ratings_of  = ratings.select{ |r| r.beer.brewery==brewery }
+    ratings_of.map(&:score).inject(&:+) / ratings_of.count.to_f
+  end
+
+  def self.top(n)
+    sorted_by_rating_in_desc_order = User.all.sort_by{ |b| -(b.ratings.count||0)}
+    sorted_by_rating_in_desc_order[1..n]
   end
 
 

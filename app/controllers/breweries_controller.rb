@@ -5,13 +5,43 @@ class BreweriesController < ApplicationController
   # GET /breweries
   # GET /breweries.json
   def index
+    @breweries = Brewery.all
     @active_breweries = Brewery.active
+
+    order = params[:order] || 'name'
+
+      @active_breweries = case order
+                          when 'name' then
+                            @active_breweries.sort_by { |b| b.name }
+                          when 'year' then
+                            @active_breweries.sort_by { |b| b.year }
+                        end
     @retired_breweries = Brewery.retired
+
+    @retired_breweries = case order
+                          when 'name' then
+                            @retired_breweries.sort_by { |b| b.name }
+                          when 'year' then
+                            @retired_breweries.sort_by { |b| b.year }
+                         end
+
+    if not session[:reverse]
+      session[:reverse]= true
+    else
+      @active_breweries = @active_breweries.reverse
+      @retired_breweries = @retired_breweries.reverse
+      session[:reverse] =false
+    end
+
   end
 
   # GET /breweries/1
   # GET /breweries/1.json
   def show
+  end
+
+  def list
+
   end
 
   # GET /breweries/new
@@ -25,7 +55,6 @@ class BreweriesController < ApplicationController
 
   # POST /breweries
   # POST /breweries.json
-
 
 
   def create
@@ -66,14 +95,22 @@ class BreweriesController < ApplicationController
     end
   end
 
+  def toggle_activity
+    brewery = Brewery.find(params[:id])
+    brewery.update_attribute :active, (not brewery.active)
+
+    new_status = brewery.active? ? "active" : "retired"
+
+    redirect_to :back, notice: "brewery activity status changed to #{new_status}"
+  end
+
   private
 
   def authenticate
     authenticate_or_request_with_http_basic do |username, password|
       username == "admin" and password == "secret"
-      end
+    end
   end
-
 
 
   private
